@@ -68,14 +68,18 @@ if uploaded_file is not None:
         st.write(caption)
 
 
-        with st.spinner("Writing your story..."):
+        st.subheader("📖 Your AI Memory")
 
-            story = generate_story(
-                caption,
-                story_style,
-                story_length,
-                custom_instruction
-            )
+        st.subheader("📖 Your AI Memory")
+
+        story_stream = generate_story(
+            caption,
+            story_style,
+            story_length,
+            custom_instruction
+        )
+
+        story = st.write_stream(story_stream)
 
 
         st.subheader("📖 Your AI Memory")

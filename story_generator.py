@@ -4,9 +4,7 @@ from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 
 
-# --------------------------------------------------
 # Load environment variables
-# --------------------------------------------------
 
 load_dotenv()
 
@@ -18,9 +16,7 @@ if not HF_TOKEN:
     )
 
 
-# --------------------------------------------------
 # Hugging Face client
-# --------------------------------------------------
 
 client = InferenceClient(
     api_key=HF_TOKEN,
@@ -28,9 +24,7 @@ client = InferenceClient(
 )
 
 
-# --------------------------------------------------
 # Story generation function
-# --------------------------------------------------
 
 def generate_story(
     caption,
@@ -39,29 +33,22 @@ def generate_story(
     custom_instruction=""
 ):
 
-    # --------------------------------------------------
     # Story length
-    # --------------------------------------------------
 
     if story_length == "Short":
-
         min_words = 50
         max_words = 80
 
     elif story_length == "Medium":
-
         min_words = 100
         max_words = 150
 
     else:
-
         min_words = 180
         max_words = 250
 
 
-    # --------------------------------------------------
-    # Story styles
-    # --------------------------------------------------
+    # detailed Story styles
 
     style_instructions = {
 
@@ -109,10 +96,7 @@ visual details, and dramatic moments.
     )
 
 
-    # --------------------------------------------------
-    # Prompt
-    # --------------------------------------------------
-
+    # Prompt writing here
     prompt = f"""
 You are a creative story writer.
 
@@ -153,11 +137,9 @@ IMPORTANT RULES:
 """
 
 
-    # --------------------------------------------------
-    # Call Hugging Face
-    # --------------------------------------------------
+    # Streaming response
 
-    response = client.chat_completion(
+    stream = client.chat_completion(
 
         model="Qwen/Qwen3-4B-Instruct-2507",
 
@@ -170,14 +152,13 @@ IMPORTANT RULES:
 
         max_tokens=max_words + 40,
 
-        temperature=0.7
+        temperature=0.7,
+
+        stream=True
     )
 
-
-    # --------------------------------------------------
-    # Extract generated story
-    # --------------------------------------------------
-
-    story = response.choices[0].message.content
-
-    return story
+    for chunk in stream:
+        if chunk.choices:
+            text = chunk.choices[0].delta.content
+            if text:
+                yield text
