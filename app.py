@@ -5,7 +5,7 @@ from vision import generate_caption
 from story_generator import generate_story
 
 
-st.title("📖 AI Memory Maker")
+st.title("📖 AI Story Teller")
 
 st.write(
     "Upload an image and let AI turn it into a creative story."
@@ -68,7 +68,7 @@ if uploaded_file is not None:
         st.write(caption)
 
 
-        st.subheader("📖 Your AI Memory")
+        st.subheader("📖 Your AI Generated Story")
 
         story_stream = generate_story(
             caption,
