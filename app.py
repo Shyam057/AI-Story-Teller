@@ -70,8 +70,6 @@ if uploaded_file is not None:
 
         st.subheader("📖 Your AI Memory")
 
-        st.subheader("📖 Your AI Memory")
-
         story_stream = generate_story(
             caption,
             story_style,
@@ -80,11 +78,6 @@ if uploaded_file is not None:
         )
 
         story = st.write_stream(story_stream)
-
-
-        st.subheader("📖 Your AI Memory")
-
-        st.write(story)
 
 
         # Download button
