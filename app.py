@@ -4,16 +4,19 @@ from PIL import Image
 from vision import generate_caption
 from story_generator import generate_story
 
+
 st.title("📖 AI Memory Maker")
 
 st.write(
     "Upload an image and let AI turn it into a creative story."
 )
 
+
 uploaded_file = st.file_uploader(
     "Upload an image",
     type=["jpg", "jpeg", "png"]
 )
+
 
 story_style = st.selectbox(
     "🎭 Choose Story Style",
@@ -26,6 +29,7 @@ story_style = st.selectbox(
     ]
 )
 
+
 story_length = st.selectbox(
     "📏 Story Length",
     [
@@ -35,16 +39,22 @@ story_length = st.selectbox(
     ]
 )
 
+
 custom_instruction = st.text_input(
     "✨ Additional instruction",
     placeholder="e.g. Make it nostalgic..."
 )
 
+
 if uploaded_file is not None:
 
     image = Image.open(uploaded_file).convert("RGB")
 
-    st.image(image, caption="Uploaded Image")
+    st.image(
+        image,
+        caption="Uploaded Image"
+    )
+
 
     if st.button("✨ Generate Story"):
 
@@ -52,9 +62,11 @@ if uploaded_file is not None:
 
             caption = generate_caption(image)
 
+
         st.subheader("👁️ What AI Sees")
 
         st.write(caption)
+
 
         with st.spinner("Writing your story..."):
 
@@ -65,6 +77,16 @@ if uploaded_file is not None:
                 custom_instruction
             )
 
+
         st.subheader("📖 Your AI Memory")
 
         st.write(story)
+
+
+        # Download button
+        st.download_button(
+            label="📥 Download Story",
+            data=story,
+            file_name="my_ai_memory.txt",
+            mime="text/plain"
+        )
