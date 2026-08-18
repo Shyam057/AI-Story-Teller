@@ -29,7 +29,6 @@ story_style = st.selectbox(
     ]
 )
 
-
 story_length = st.selectbox(
     "📏 Story Length",
     [
